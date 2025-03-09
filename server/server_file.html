@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP Server Test File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #444;
+            margin-top: 30px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+        }
+
+        /* Adding extra content to ensure file is between 10-50K */
+        .filler {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .highlight {
+            background-color: #ffffcc;
+            padding: 15px;
+            border-left: 4px solid #ffeb3b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTTP Server Test File</h1>
+    
+    <p>This is a sample HTML file being served by our custom C HTTP server.</p>
+    
+    <div class="highlight">
+        <p>If you're seeing this page, it means our simple HTTP server and client are working correctly!</p>
+    </div>
+    
+    <h2>Implementation Notes</h2>
+    
+    <p>The server and client programs implement a basic HTTP file transfer using POSIX socket libraries:</p>
+    
+    <ul>
+        <li>The server listens for incoming connections</li>
+        <li>When a client connects, the server sends this HTML file</li>
+        <li>The client receives the file and saves it locally</li>
+        <li>The connection is closed after the transfer completes</li>
+    </ul>
+    
+    <h2>Code Snippet</h2>
+    
+    <p>Here's an example of how we might create a socket in C:</p>
+    
+    <pre><code>
+int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+if (sockfd < 0) {
+    perror("ERROR opening socket");
+    exit(1);
+}
+    </code></pre>
+    
+    <!-- Adding content to ensure the file is between 10K and 50K -->
+    <div class="filler">
+        <h2>About Socket Programming</h2>
+        
+        <p>Socket programming is a way of connecting two nodes on a network to communicate with each other. One socket (node) listens on a particular port at an IP, while the other socket reaches out to the other to form a connection. The server forms the listener socket while the client reaches out to the server.</p>
+        
+        <h3>Socket Types</h3>
+        
+        <p>There are primarily two types of sockets:</p>
+        
+        <ul>
+            <li><strong>Stream Sockets (SOCK_STREAM)</strong>: These use TCP (Transmission Control Protocol) for data transmission. TCP is a reliable, connection-oriented protocol that ensures that all data is received correctly and in the same order it was sent.</li>
+            <li><strong>Datagram Sockets (SOCK_DGRAM)</strong>: These use UDP (User Datagram Protocol) for data transmission. UDP is an unreliable, connectionless protocol that does not guarantee that the data sent will be received, or received in the same order as sent.</li>
+        </ul>
+        
+        <h3>Socket API Functions</h3>
+        
+        <p>The socket API provides several functions for developing network applications:</p>
+        
+        <ul>
+            <li><code>socket()</code>: Creates a new socket of a certain type, identified by an integer number, and allocates system resources to it.</li>
+            <li><code>bind()</code>: Binds a socket to an address, in this case the address of the current host and port number on which the server will run.</li>
+            <li><code>listen()</code>: Puts the server socket in a passive mode, where it waits for the client to approach the server to make a connection.</li>
+            <li><code>accept()</code>: Causes the process to block until a client connects to the server. It returns a new socket file descriptor for accepting connection.</li>
+            <li><code>connect()</code>: Used by the client to establish a connection with the server.</li>
+            <li><code>send()</code> and <code>recv()</code>: Used for sending and receiving data with stream sockets.</li>
+            <li><code>sendto()</code> and <code>recvfrom()</code>: Used for sending and receiving data with datagram sockets.</li>
+            <li><code>close()</code>: Closes a socket.</li>
+        </ul>
+        
+        <h3>Socket Programming Workflow</h3>
+        
+        <h4>Server Side</h4>
+        <ol>
+            <li>Create a socket using <code>socket()</code></li>
+            <li>Bind the socket to an address using <code>bind()</code></li>
+            <li>Listen for connections with <code>listen()</code></li>
+            <li>Accept a connection with <code>accept()</code></li>
+            <li>Send/receive data</li>
+            <li>Close the socket with <code>close()</code></li>
+        </ol>
+        
+        <h4>Client Side</h4>
+        <ol>
+            <li>Create a socket using <code>socket()</code></li>
+            <li>Connect to the server using <code>connect()</code></li>
+            <li>Send/receive data</li>
+            <li>Close the socket with <code>close()</code></li>
+        </ol>
+        
+        <h2>HTTP Protocol</h2>
+        
+        <p>HTTP (Hypertext Transfer Protocol) is an application-level protocol for distributed, collaborative, hypermedia information systems. It is the foundation of data communication for the World Wide Web.</p>
+        
+        <h3>HTTP Request Structure</h3>
+        
+        <p>An HTTP request consists of:</p>
+        <ol>
+            <li>A request line (e.g., GET /path/file.html HTTP/1.1)</li>
+            <li>Request headers</li>
+            <li>An empty line</li>
+            <li>An optional message body</li>
+        </ol>
+        
+        <h3>HTTP Response Structure</h3>
+        
+        <p>An HTTP response consists of:</p>
+        <ol>
+            <li>A status line (e.g., HTTP/1.1 200 OK)</li>
+            <li>Response headers</li>
+            <li>An empty line</li>
+            <li>An optional message body</li>
+        </ol>
+        
+        <h3>Common HTTP Methods</h3>
+        
+        <ul>
+            <li><strong>GET</strong>: Requests a representation of the specified resource.</li>
+            <li><strong>POST</strong>: Submits data to be processed to the identified resource.</li>
+            <li><strong>PUT</strong>: Uploads a representation of the specified resource.</li>
+            <li><strong>DELETE</strong>: Deletes the specified resource.</li>
+            <li><strong>HEAD</strong>: Same as GET but returns only HTTP headers and no document body.</li>
+            <li><strong>OPTIONS</strong>: Returns the HTTP methods that the server supports for the specified URL.</li>
+            <li><strong>PATCH</strong>: Applies partial modifications to a resource.</li>
+        </ul>
+        
+        <h3>Common HTTP Status Codes</h3>
+        
+        <ul>
+            <li><strong>1xx</strong>: Informational responses</li>
+            <li><strong>2xx</strong>: Success
+                <ul>
+                    <li>200 OK: The request has succeeded.</li>
+                    <li>201 Created: The request has been fulfilled and resulted in a new resource being created.</li>
+                </ul>
+            </li>
+            <li><strong>3xx</strong>: Redirection
+                <ul>
+                    <li>301 Moved Permanently: The requested resource has been assigned a new permanent URI.</li>
+                    <li>302 Found: The requested resource resides temporarily under a different URI.</li>
+                </ul>
+            </li>
+            <li><strong>4xx</strong>: Client errors
+                <ul>
+                    <li>400 Bad Request: The request could not be understood by the server.</li>
+                    <li>404 Not Found: The server has not found anything matching the Request-URI.</li>
+                </ul>
+            </li>
+            <li><strong>5xx</strong>: Server errors
+                <ul>
+                    <li>500 Internal Server Error: The server encountered an unexpected condition.</li>
+                    <li>503 Service Unavailable: The server is currently unable to handle the request.</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h2>C Programming Concepts</h2>
+        
+        <p>Here are some key C programming concepts used in socket programming:</p>
+        
+        <h3>Structures</h3>
+        
+        <p>Structures are used to group related variables of different types. In socket programming, we use structures like <code>sockaddr_in</code> to store information about socket addresses.</p>
+        
+        <h3>Pointers</h3>
+        
+        <p>Pointers are variables that store memory addresses. They are extensively used in socket programming for things like passing socket addresses, storing connection information, and managing memory.</p>
+        
+        <h3>File Descriptors</h3>
+        
+        <p>In UNIX-like systems, everything is treated as a file, and each file is associated with a file descriptor, which is a non-negative integer. Sockets are also represented as file descriptors, which are used to perform operations on them.</p>
+        
+        <h3>Error Handling</h3>
+        
+        <p>Proper error handling is crucial in network programming. Functions like <code>perror()</code> and <code>strerror()</code> are used to print descriptive error messages.</p>
+        
+        <h3>Byte Ordering</h3>
+        
+        <p>Network byte order is big-endian, but not all machines use this order. Functions like <code>htons()</code> (host to network short) and <code>ntohs()</code> (network to host short) are used to convert between host and network byte order.</p>
+    </div>
+
+    <p>Thank you for using our simple HTTP server!</p>
+</body>
+</html>

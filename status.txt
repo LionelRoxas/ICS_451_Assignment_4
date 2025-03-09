@@ -1,0 +1,24 @@
+# Status of Program
+
+## Current State
+The program is fully functional. Both the server and client components work as expected.
+
+- Server: The server creates a socket, binds to a port, listens for connections, and sends the requested file when a client connects.
+- Client: The client connects to the server, receives an HTTP response with headers and file content, and saves the file locally.
+
+## Features Implemented
+- Basic HTTP server that sends a file upon connection
+- Simple HTTP client that receives and saves the file
+- Proper HTTP header parsing in the client
+- Informative output messages for each stage of the socket communication process
+- Proper error handling
+- Clean program termination
+
+## Known Bugs/Limitations
+- The server only handles one connection and then exits (as per assignment requirements)
+- The server only sends the predefined file (server_file.html)
+- Content-Type in the HTTP header is set to "text/html" by default and needs to be manually changed for other file types
+- The client saves the file as "file_client.html" by default and should be modified for other file types
+
+## Testing
+The program has been tested on a UNIX environment. Both components compile and run without errors. The file transfer works correctly, and the client successfully saves the received file.
